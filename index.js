@@ -6,9 +6,11 @@ AWS.config.credentials = new AWS.Credentials(
 );
 
 AWS.config.region = 'us-east-2';
+
 const iotdata = new AWS.IotData({
   endpoint: 'a2ink9r2yi1ntl-ats.iot.us-east-2.amazonaws.com',
 });
+
 iotdata.getThingShadow({thingName: '0123B5829E389548EE'}, (err, data) => {
   if (err) {
     console.log(err, err.stack);
