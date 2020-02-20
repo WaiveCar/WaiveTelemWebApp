@@ -1,15 +1,24 @@
-const {AWS, iotData} = require('../awsConfig');
+const {AWS, iot, iotData} = require('../awsConfig');
 const actions = require('../telemActions');
 
 module.exports = {
   index: (req, res) => {
-    res.send('Empty');
+    iot.listThings({}, (err, data) => {
+      if (err) {
+        throw new Error(err.stack);
+      }
+      res.render('index', {
+        title: 'Telematics Management',
+        things: data.things,
+        actions,
+      });
+    });
   },
 
   show: (req, res) => {
     iotData.getThingShadow({thingName: req.params.thingName}, (err, data) => {
       if (err) {
-        res.send(err.stack);
+        throw new error(err.stack);
       } else {
         res.send(data);
       }
@@ -24,7 +33,7 @@ module.exports = {
       },
       (err, data) => {
         if (err) {
-          res.send(err.stack);
+          throw new error(err.stack);
         } else {
           res.send(data);
         }

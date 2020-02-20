@@ -1,4 +1,4 @@
-const {AWS, iot} = require('./awsConfig');
+const {AWS} = require('./awsConfig');
 const express = require('express');
 const hbs = require('express-hbs');
 const shadowsRouter = require('./routers/shadowsRouter.js');
@@ -15,21 +15,6 @@ app.engine(
 );
 app.set('view engine', 'hbs');
 app.set('views', __dirname + '/views');
-
-app.get('/', (req, res) => {
-  iot.listThings({}, (err, data) => {
-    if (err) {
-      console.log(err, err.stack);
-    } else {
-      console.log('data', data);
-    }
-    res.render('index', {
-      title: 'Telematics Management',
-      things: data.things,
-      actions,
-    });
-  });
-});
 
 app.use('/shadows', shadowsRouter);
 app.listen(port, () => console.log(`App listening on ${port}`));
