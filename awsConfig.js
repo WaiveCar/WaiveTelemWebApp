@@ -10,4 +10,6 @@ const iotData = new AWS.IotData({
   endpoint: 'a2ink9r2yi1ntl-ats.iot.us-east-2.amazonaws.com',
 });
 
-module.exports = {AWS, iotData};
+const iot = new AWS.Iot();
+
+module.exports = {AWS, iotData, iot};

@@ -2,9 +2,16 @@
   <body>
     <div>{{title}}</div>
     <div>
-      {{#each actions}}
-        <button onclick="command('{{@key}}')">{{@key}}</button>
-      {{/each}}
+      <select id="things">
+        {{#each things}}
+          <option value="{{this.thingName}}">{{this.thingName}}</option>
+        {{/each}}
+      </select>
+      <div>
+        {{#each actions}}
+          <button onclick="command('{{@key}}')">{{@key}}</button>
+        {{/each}}
+      </div>
     </div>
     <div class="msg"></div>
   </body>
