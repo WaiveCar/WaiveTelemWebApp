@@ -1,15 +1,5 @@
-const AWS = require('aws-sdk');
-AWS.config.credentials = new AWS.Credentials(
-  'AKIASTZMBSC75MBRXBWF',
-  'pM3e2ygob74qo3ZLahk2S+D+7jmyf3naHrB06A5n',
-);
-AWS.config.region = 'us-east-2';
-
-const actions = require('../telemActions.js');
-
-const iotdata = new AWS.IotData({
-  endpoint: 'a2ink9r2yi1ntl-ats.iot.us-east-2.amazonaws.com',
-});
+const {AWS, iotData} = require('../awsConfig');
+const actions = require('../telemActions');
 
 module.exports = {
   index: (req, res) => {
@@ -17,7 +7,7 @@ module.exports = {
   },
 
   show: (req, res) => {
-    iotdata.getThingShadow({thingName: req.params.thingName}, (err, data) => {
+    iotData.getThingShadow({thingName: req.params.thingName}, (err, data) => {
       if (err) {
         res.send(err.stack);
       } else {
@@ -27,7 +17,7 @@ module.exports = {
   },
 
   update: (req, res) => {
-    iotdata.updateThingShadow(
+    iotData.updateThingShadow(
       {
         thingName: req.params.thingName,
         payload: `{"state": ${JSON.stringify(actions[req.params.action])}}`,

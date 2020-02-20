@@ -1,4 +1,4 @@
-const AWS = require('aws-sdk');
+const {AWS, iotData} = require('./awsConfig');
 const express = require('express');
 const hbs = require('express-hbs');
 const shadowsRouter = require('./routers/shadowsRouter.js');
@@ -18,7 +18,6 @@ app.set('views', __dirname + '/views');
 app.get('/', (req, res) => {
   res.render('index', {
     title: 'Telematics Actions',
-    actions: actions,
   });
 });
 
