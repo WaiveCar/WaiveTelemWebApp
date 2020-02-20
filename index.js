@@ -1,4 +1,15 @@
 const AWS = require('aws-sdk');
+const express = require('express');
+
+const app = express();
+const port = 2080;
+
+const actions = {
+  unlock1: '{"desired":{"can":"unlock_1"}}',
+  unlockAll: '{"desired":{"can":"unlock_all"}}',
+  lock: '{"desired":{"can":"lock"}}',
+  flashLights: '{"desired":{"can":"flash_lights"}}',
+};
 
 AWS.config.credentials = new AWS.Credentials(
   'AKIASTZMBSC75MBRXBWF',
@@ -11,21 +22,38 @@ const iotdata = new AWS.IotData({
   endpoint: 'a2ink9r2yi1ntl-ats.iot.us-east-2.amazonaws.com',
 });
 
-iotdata.getThingShadow({thingName: '0123B5829E389548EE'}, (err, data) => {
-  if (err) {
-    console.log(err, err.stack);
-  } else {
-    console.log(data);
-  }
+/*
+ */
+
+const actions = {
+  getShadow: (req, res) => {
+    iotdata.getThingShadow({thingName: '0123B5829E389548EE'}, (err, data) => {
+      if (err) {
+        res.send(err.stack);
+      } else {
+        res.send(data);
+      }
+    });
+  },
+  updateShadow: (req, res) => {
+    iotdata.updateThingShadow(
+      {
+        thingName: '0123B5829E389548EE',
+        payload: '{"state": {"desired":{"lock":"close"}}}',
+      },
+      (err, data) => {
+        if (err) {
+          res.send(err.stack);
+        } else {
+          res.send(data);
+        }
+      },
+    );
+  },
+};
+
+app.get('/', (req, res) => {
+  res.send('hello');
 });
 
-iotdata.updateThingShadow({
-  thingName: '0123B5829E389548EE',
-  payload: '{"state": {"desired":{"lock":"close"}}}',
-}, (err, data) => {
-  if (err) {
-    console.log(err, err.stack);
-  } else {
-    console.log(data);
-  }
-});
+app.listen(port, () => console.log(`App listening on ${port}`));
