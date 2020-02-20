@@ -5,7 +5,7 @@ module.exports = {
   index: (req, res) => {
     iot.listThings({}, (err, data) => {
       if (err) {
-        throw new Error(err.stack);
+        res.status(500).send(err);
       }
       res.render('index', {
         title: 'Telematics Management',
@@ -18,7 +18,7 @@ module.exports = {
   show: (req, res) => {
     iotData.getThingShadow({thingName: req.params.thingName}, (err, data) => {
       if (err) {
-        throw new error(err.stack);
+        res.status(500).send(err);
       } else {
         res.send(data);
       }
@@ -33,7 +33,7 @@ module.exports = {
       },
       (err, data) => {
         if (err) {
-          throw new error(err.stack);
+          res.status(500).send(err);
         } else {
           res.send(data);
         }
