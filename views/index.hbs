@@ -1,5 +1,19 @@
 <html>
   <body>
-    <div>Hello</div>
+    <div>{{title}}</div>
+    <div>
+      {{#each actions}}
+        <button onclick="command('{{@key}}')">{{@key}}</button>
+      {{/each}}
+    </div>
   </body>
+  <script>
+    function command(action) {
+      fetch(
+        '/shadow' 
+      ).then(res => res.json())
+      .then(json => console.log('json', json))
+      .catch(e => console.log('error', e));
+    }
+  </script>
 </html>

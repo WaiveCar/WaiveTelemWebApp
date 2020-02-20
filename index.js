@@ -61,7 +61,10 @@ const functions = {
 };
 
 app.get('/', (req, res) => {
-  res.render('index', {});
+  res.render('index', {
+    title: 'Telematics Actions',
+    actions: actions,
+  });
 });
 
 app.get('/shadow', functions.getShadow);
