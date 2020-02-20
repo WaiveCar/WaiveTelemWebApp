@@ -1,8 +1,17 @@
 const AWS = require('aws-sdk');
 const express = require('express');
+const hbs = require('express-hbs');
 
 const app = express();
 const port = 2080;
+app.engine(
+  'hbs',
+  hbs.express4({
+    partialsDir: __dirname + '/views',
+  }),
+);
+app.set('view engine', 'hbs');
+app.set('views', __dirname + '/views');
 
 const actions = {
   unlock1: {desired: {can: 'unlock_1'}},
@@ -35,7 +44,6 @@ const functions = {
     });
   },
   updateShadow: (req, res) => {
-    console.log(JSON.stringify({state: actions[req.params.action]}));
     iotdata.updateThingShadow(
       {
         thingName: '0123B5829E389548EE',
@@ -53,7 +61,7 @@ const functions = {
 };
 
 app.get('/', (req, res) => {
-  res.send('hello');
+  res.render('index', {});
 });
 
 app.get('/shadow', functions.getShadow);
