@@ -6,14 +6,29 @@
         <button onclick="command('{{@key}}')">{{@key}}</button>
       {{/each}}
     </div>
+    <div class="msg"></div>
   </body>
   <script>
     function command(action) {
       fetch(
-        '/shadow' 
+        `/shadow/${action}`, 
+        {
+          method: 'POST'
+        }
       ).then(res => res.json())
-      .then(json => console.log('json', json))
-      .catch(e => console.log('error', e));
+      .then(json => {
+        console.log('json', json)
+        addMsg('green', `${action} successful`);
+      })
+      .catch(e => {
+        console.log('error', e)
+        addMsg('red', `${action} failed`);
+      });
+    }
+    function addMsg(color, message) {
+      let msg = document.querySelector('.msg');
+      msg.textContent = message;  
+      msg.style.color = color;
     }
   </script>
 </html>
