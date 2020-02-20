@@ -5,11 +5,13 @@ const app = express();
 const port = 2080;
 
 const actions = {
-  unlock1: '{"desired":{"can":"unlock_1"}}',
-  unlockAll: '{"desired":{"can":"unlock_all"}}',
-  lock: '{"desired":{"can":"lock"}}',
-  flashLights: '{"desired":{"can":"flash_lights"}}',
+  unlock1: {desired: {can: 'unlock_1'}},
+  unlockAll: {desired: {can: 'unlock_all'}},
+  lock: {desired: {can: 'lock'}},
+  flashLights: {desired: {can: 'flash_lights'}},
 };
+
+const thingName = '0123B5829E389548EE';
 
 AWS.config.credentials = new AWS.Credentials(
   'AKIASTZMBSC75MBRXBWF',
@@ -22,12 +24,9 @@ const iotdata = new AWS.IotData({
   endpoint: 'a2ink9r2yi1ntl-ats.iot.us-east-2.amazonaws.com',
 });
 
-/*
- */
-
-const actions = {
+const functions = {
   getShadow: (req, res) => {
-    iotdata.getThingShadow({thingName: '0123B5829E389548EE'}, (err, data) => {
+    iotdata.getThingShadow({thingName}, (err, data) => {
       if (err) {
         res.send(err.stack);
       } else {
@@ -36,10 +35,11 @@ const actions = {
     });
   },
   updateShadow: (req, res) => {
+    console.log(JSON.stringify({state: actions[req.params.action]}));
     iotdata.updateThingShadow(
       {
         thingName: '0123B5829E389548EE',
-        payload: '{"state": {"desired":{"lock":"close"}}}',
+        payload: `{"state": ${JSON.stringify(actions[req.params.action])}}`,
       },
       (err, data) => {
         if (err) {
@@ -55,5 +55,8 @@ const actions = {
 app.get('/', (req, res) => {
   res.send('hello');
 });
+
+app.get('/shadow', functions.getShadow);
+app.post('/shadow/:action', functions.updateShadow);
 
 app.listen(port, () => console.log(`App listening on ${port}`));
