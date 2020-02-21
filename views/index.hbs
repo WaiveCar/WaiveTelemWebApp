@@ -39,7 +39,26 @@
 
     function addMsg(color, message) {
       msg.textContent = message;  
-      msg.style.color = color;
+      if (color === 'red') {
+        msg.classList.remove('green');
+        msg.classList.add('red');
+      } else {
+        msg.classList.remove('red');
+        msg.classList.add('green');
+      }
     }
   </script>
+  <style>
+    .msg {
+      border-radius: 5px;
+    }
+    .red {
+      border: 1px solid red;
+      color: red;
+    }
+    .green {
+      border: 1px solid green;
+      color: green;
+    }
+  </style>
 </html>
