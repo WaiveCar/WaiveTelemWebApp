@@ -4,7 +4,7 @@
     <div>
       <select id="thingsList">
         {{#each things}}
-          <option value="{{this.thingName}}">{{this.thingName}}</option>
+          <option value="{{this.thingName}}">{{this.thingName}}: {{this.attributes.Whose}}</option>
         {{/each}}
       </select>
     </div>
