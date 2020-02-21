@@ -1,15 +1,15 @@
 const AWS = require('aws-sdk');
 
 AWS.config.credentials = new AWS.Credentials(
-  'AKIASTZMBSC75MBRXBWF',
-  'pM3e2ygob74qo3ZLahk2S+D+7jmyf3naHrB06A5n',
+  process.env.aws_access_key_id,
+  process.env.aws_secret_access_key,
 );
-AWS.config.region = 'us-east-2';
+AWS.config.region = process.env.region;
 
 const iot = new AWS.Iot();
 
 const iotData = new AWS.IotData({
-  endpoint: 'a2ink9r2yi1ntl-ats.iot.us-east-2.amazonaws.com',
+  endpoint: process.env.endpoint,
 });
 
 module.exports = {AWS, iot, iotData};
