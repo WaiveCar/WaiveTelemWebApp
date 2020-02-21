@@ -2,10 +2,11 @@ const {AWS, iot, iotData} = require('../awsConfig');
 const actions = require('../telemActions');
 
 module.exports = {
-  index: (req, res) => {
+  index: (req, res, next) => {
     iot.listThings({}, (err, data) => {
       if (err) {
-        return res.status(500).send(err);
+        res.status(500);
+        return next(err.stack);
       }
       const {things} = data;
       res.render('index', {
@@ -18,17 +19,18 @@ module.exports = {
     });
   },
 
-  show: (req, res) => {
+  show: (req, res, next) => {
     iotData.getThingShadow({thingName: req.params.thingName}, (err, data) => {
       if (err) {
-        return res.status(500).send(err);
+        res.status(500);
+        return next(err.stack);
       } else {
         res.send(data);
       }
     });
   },
 
-  update: (req, res) => {
+  update: (req, res, next) => {
     iotData.updateThingShadow(
       {
         thingName: req.params.thingName,
@@ -36,7 +38,8 @@ module.exports = {
       },
       (err, data) => {
         if (err) {
-          res.status(500).send(err);
+          res.status(500);
+          return next(err.stack);
         } else {
           res.send(data);
         }
