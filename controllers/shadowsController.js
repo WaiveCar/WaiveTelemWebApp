@@ -5,11 +5,14 @@ module.exports = {
   index: (req, res) => {
     iot.listThings({}, (err, data) => {
       if (err) {
-        res.status(500).send(err);
+        return res.status(500).send(err);
       }
+      const {things} = data;
       res.render('index', {
         title: 'Telematics Management',
-        things: data.things,
+        things: things,
+        selected: things[0].thingName,
+        whose: things[0].attributes.Whose,
         actions,
       });
     });
@@ -18,7 +21,7 @@ module.exports = {
   show: (req, res) => {
     iotData.getThingShadow({thingName: req.params.thingName}, (err, data) => {
       if (err) {
-        res.status(500).send(err);
+        return res.status(500).send(err);
       } else {
         res.send(data);
       }

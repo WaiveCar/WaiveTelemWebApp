@@ -2,11 +2,13 @@
   <body>
     <div>{{title}}</div>
     <div>
-      <select id="things">
+      <select id="thingsList">
         {{#each things}}
           <option value="{{this.thingName}}">{{this.thingName}}</option>
         {{/each}}
       </select>
+    </div>
+    <div>
       <div>
         {{#each actions}}
           <button onclick="command('{{@key}}')">{{@key}}</button>
@@ -16,24 +18,26 @@
     <div class="msg"></div>
   </body>
   <script>
+    var selected = '{{selected}}';
+    var msg = document.querySelector('.msg');
+
+    document.querySelector('#thingsList').onchange = function(e) {
+      selected = e.target.value;
+      console.log('selected', selected);
+    }
+
     function command(action) {
       fetch(
-        `/shadow/${action}`, 
+        `/shadows/${selected}/${action}`, 
         {
           method: 'POST'
         }
       ).then(res => res.json())
-      .then(json => {
-        console.log('json', json)
-        addMsg('green', `${action} successful`);
-      })
-      .catch(e => {
-        console.log('error', e)
-        addMsg('red', `${action} failed`);
-      });
+      .then(json => addMsg('green', `${action} successful`))
+      .catch(e => addMsg('red', `${action} failed`));
     }
+
     function addMsg(color, message) {
-      let msg = document.querySelector('.msg');
       msg.textContent = message;  
       msg.style.color = color;
     }
