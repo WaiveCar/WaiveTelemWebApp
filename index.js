@@ -1,11 +1,11 @@
 const {AWS} = require('./awsConfig');
 const express = require('express');
 const hbs = require('express-hbs');
-const shadowsRouter = require('./routers/shadowsRouter.js');
+const shadowsRouter = require('./routers/shadowsRouter');
+const actions = require('./telemActions');
 
 const app = express();
 const port = 2080;
-const actions = require('./telemActions');
 
 app.engine(
   'hbs',
@@ -13,6 +13,7 @@ app.engine(
     partialsDir: __dirname + '/views',
   }),
 );
+
 app.set('view engine', 'hbs');
 app.set('views', __dirname + '/views');
 

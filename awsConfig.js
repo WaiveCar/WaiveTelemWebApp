@@ -6,10 +6,10 @@ AWS.config.credentials = new AWS.Credentials(
 );
 AWS.config.region = 'us-east-2';
 
+const iot = new AWS.Iot();
+
 const iotData = new AWS.IotData({
   endpoint: 'a2ink9r2yi1ntl-ats.iot.us-east-2.amazonaws.com',
 });
 
-const iot = new AWS.Iot();
-
-module.exports = {AWS, iotData, iot};
+module.exports = {AWS, iot, iotData};
