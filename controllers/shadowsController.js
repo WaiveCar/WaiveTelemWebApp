@@ -8,6 +8,16 @@ module.exports = {
         res.status(500);
         return next(err.stack);
       }
+      res.send(data);
+    });
+  },
+
+  manage: (req, res, next) => {
+    iot.listThings({}, (err, data) => {
+      if (err) {
+        res.status(500);
+        return next(err.stack);
+      }
       const {things} = data;
       res.render('index', {
         title: 'Telematics Management',
