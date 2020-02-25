@@ -8,7 +8,8 @@ module.exports = {
         res.status(500);
         return next(err.stack);
       }
-      res.send(data);
+      const {things} = data;
+      res.send(things);
     });
   },
 
