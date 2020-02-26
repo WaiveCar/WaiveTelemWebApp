@@ -9,10 +9,12 @@ module.exports = {
         return next(err.stack);
       }
       const {things} = data;
-      res.send(things.map(thing => {
-        thing.type = 'homeGrown';
-        return thing;
-      }));
+      res.send(
+        things.map(thing => {
+          thing.type = 'homeGrown';
+          return thing;
+        }),
+      );
     });
   },
 
@@ -39,7 +41,7 @@ module.exports = {
         res.status(500);
         return next(err.stack);
       } else {
-        res.send(data);
+        res.send(JSON.parse(data.payload).reported);
       }
     });
   },
