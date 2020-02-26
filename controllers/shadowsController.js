@@ -5,8 +5,7 @@ module.exports = {
   index: (req, res, next) => {
     iot.listThings({}, (err, data) => {
       if (err) {
-        res.status(500);
-        return next(err.stack);
+        return next(err);
       }
       const {things} = data;
       res.send(
@@ -21,8 +20,7 @@ module.exports = {
   manage: (req, res, next) => {
     iot.listThings({}, (err, data) => {
       if (err) {
-        res.status(500);
-        return next(err.stack);
+        return next(err);
       }
       const {things} = data;
       res.render('index', {
@@ -38,10 +36,9 @@ module.exports = {
   show: (req, res, next) => {
     iotData.getThingShadow({thingName: req.params.thingName}, (err, data) => {
       if (err) {
-        res.status(500);
-        return next(err.stack);
+        return next(err);
       } else {
-        res.send(JSON.parse(data.payload).reported);
+        res.send(JSON.parse(data.payload));
       }
     });
   },
@@ -54,8 +51,7 @@ module.exports = {
       },
       (err, data) => {
         if (err) {
-          res.status(500);
-          return next(err.stack);
+          return next(err);
         } else {
           res.send(data);
         }
