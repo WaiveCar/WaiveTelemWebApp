@@ -4,6 +4,6 @@ const shadowsController = require('../controllers/shadowsController');
 router.get('/', shadowsController.index);
 router.get('/manage', shadowsController.manage);
 router.get('/:thingName', shadowsController.show);
-router.post('/:thingName/:action', shadowsController.update);
+router.put('/:thingName/:action', shadowsController.update);
 
 module.exports = router;
