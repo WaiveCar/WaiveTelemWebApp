@@ -38,12 +38,12 @@ module.exports = {
       if (err) {
         return next(err);
       } else {
-        res.send(JSON.parse(data.payload).state);
       }
     });
   },
 
   update: (req, res, next) => {
+    console.log(req.params);
     iotData.updateThingShadow(
       {
         thingName: req.params.thingName,
@@ -53,7 +53,7 @@ module.exports = {
         if (err) {
           return next(err);
         } else {
-          res.send(data);
+          res.send(JSON.parse(data.payload).state);
         }
       },
     );
