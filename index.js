@@ -27,8 +27,8 @@ app.set('views', __dirname + '/views');
 
 app.use('/shadows', shadowsRouter);
 
-app.use((err, req, res, next) =>
-  res.status(err.statusCode).json({message: err.message, code: err.code}),
-);
+app.use((err, req, res, next) => {
+  res.status(err.statusCode).json({message: err.message, code: err.code});
+});
 
 app.listen(port, () => console.log(`App listening on ${port}`));
