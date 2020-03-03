@@ -38,6 +38,7 @@ module.exports = {
       if (err) {
         return next(err);
       } else {
+        res.send(JSON.parse(data.payload).state);
       }
     });
   },
