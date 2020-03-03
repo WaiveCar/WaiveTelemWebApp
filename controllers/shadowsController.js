@@ -43,7 +43,6 @@ module.exports = {
   },
 
   update: (req, res, next) => {
-    console.log(req.params);
     iotData.updateThingShadow(
       {
         thingName: req.params.thingName,
@@ -53,7 +52,16 @@ module.exports = {
         if (err) {
           return next(err);
         } else {
-          res.send(JSON.parse(data.payload).state);
+          iotData.getThingShadow(
+            {thingName: req.params.thingName},
+            (err, data) => {
+              if (err) {
+                return next(err);
+              } else {
+                res.send(JSON.parse(data.payload).state);
+              }
+            },
+          );
         }
       },
     );
