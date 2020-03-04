@@ -42,7 +42,7 @@ app.use((req, res, next) => {
 app.use('/shadows', shadowsRouter);
 
 app.use((err, req, res, next) => {
-  log.warn()
+  log.warn(`${err.statusCode}: ${err.message}`);
   res.status(err.statusCode).json({message: err.message, code: err.code});
 });
 
