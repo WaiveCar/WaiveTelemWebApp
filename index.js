@@ -10,10 +10,14 @@ const app = express();
 const port = 2080;
 
 const opts = {
-  logFilePath: './mylogfile.log',
+  logDirectory: './logs',
+  fileNamePattern: 'waive-telem-<DATE>.log',
+  dateFormat: 'YYYY-MM-DD',
   timestampFormat: 'YYYY-MM-DD HH:mm:ss.SSS',
 };
-const log = SimpleNodeLogger.createSimpleLogger(opts);
+
+const logWrite = require('simple-node-logger').createRollingFileLogger(opts);
+const log = require('simple-node-logger').createSimpleLogger();
 
 app.use(
   bodyParser.urlencoded({
@@ -22,7 +26,6 @@ app.use(
 );
 
 app.use(bodyParser.json());
-
 
 app.engine(
   'hbs',
@@ -35,14 +38,18 @@ app.set('view engine', 'hbs');
 app.set('views', __dirname + '/views');
 
 app.use((req, res, next) => {
-  log.info(`${req.method}: ${req.url}`);
+  let message = `${req.method}: ${req.url}`;
+  logWrite.info(message);
+  log.info(message);
   next();
 });
 
 app.use('/shadows', shadowsRouter);
 
 app.use((err, req, res, next) => {
-  log.warn(`${err.statusCode}: ${err.message}`);
+  let message = `${req.method}: ${req.url}`;
+  logWrite.warn(message);
+  log.warn(message);
   res.status(err.statusCode).json({message: err.message, code: err.code});
 });
 
