@@ -2,6 +2,7 @@ const {AWS, iot, iotData} = require('../awsConfig');
 const actions = require('../telemActions');
 
 module.exports = {
+  // Fetches a list of all things attached to the AWS account used
   index: (req, res, next) => {
     iot.listThings({}, (err, data) => {
       if (err) {
@@ -18,6 +19,7 @@ module.exports = {
   },
 
   manage: (req, res, next) => {
+    // Renders the front-end telematics management app
     iot.listThings({}, (err, data) => {
       if (err) {
         return next(err);
@@ -34,6 +36,7 @@ module.exports = {
   },
 
   show: (req, res, next) => {
+    // Fetches the sahdow for a single thing
     iotData.getThingShadow({thingName: req.params.thingName}, (err, data) => {
       if (err) {
         return next(err);
@@ -44,6 +47,7 @@ module.exports = {
   },
 
   update: (req, res, next) => {
+    // Sends an update to a Thing Shadow and returns the updated shadow
     iotData.updateThingShadow(
       {
         thingName: req.params.thingName,

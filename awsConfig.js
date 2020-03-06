@@ -1,3 +1,4 @@
+// This file configures the credentials for communicating with various AWS services
 const AWS = require('aws-sdk');
 
 AWS.config.credentials = new AWS.Credentials(
